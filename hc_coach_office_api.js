@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////
+////////////////////////////////////////////
 ////////////////////////////////////////////
 //////API v.37 (от 23.09.2021)
 ////////////////////////////////////////////
@@ -955,7 +955,7 @@ function AddPersonToEventFromExcel(user_id, httpRequest) {
                             FROM \
                                 collaborators cs \
                                 INNER JOIN collaborator c ON c.id = cs.id \
-                            WHERE cs.code = '" + OptInt(sCode) + "' AND cs.fullname = '" + sFullname + "' \
+                            WHERE cs.code = '" + sCode + "' AND cs.fullname = '" + sFullname + "' \
                         "));
 
                         if (oCollaborator != undefined) {
@@ -1044,6 +1044,7 @@ function GetLectorsForCreateEvent(user_id, httpRequest) {
                     cs.fullname, \
                     c.data.value('(collaborator/firstname)[1]', 'varchar(max)') firstname, \
                     c.data.value('(collaborator/lastname)[1]', 'varchar(max)') lastname, \
+                    c.data.value('(collaborator/desc)[1]', 'varchar(max)') [desc], \
                     cs.email, \
                     cs.position_name, \
                     cs.sex, \
@@ -1069,7 +1070,8 @@ function GetLectorsForCreateEvent(user_id, httpRequest) {
                     position_name: String(elem.position_name),
                     email: String(elem.email),
                     url: String(elem.pict_url),
-                    gender: String(elem.sex)
+                    gender: String(elem.sex),
+                    desc: String(elem.desc)
                 })
             }
         }
@@ -1183,6 +1185,7 @@ function GetCollaboratorsForSaveEduProgram(user_id, httpRequest) {
             FROM \
                 remote_collections rcs \
                 INNER JOIN remote_collection rc ON rc.id = rcs.id \
+                -- INNER JOIN groups gs ON gs.id = rc.data.value('(//wvars/wvar[name=''group_id'']/value)[1]', 'bigint') \
             WHERE code = '_settings_homecredit' \
         "));
 
@@ -1493,6 +1496,7 @@ function GetEventByID(user_id, httpRequest) {
                         CAST(cs1.id AS VARCHAR(MAX)) id, \
                         c1.data.value('(collaborator/firstname)[1]', 'varchar(max)') firstname, \
                         c1.data.value('(collaborator/lastname)[1]', 'varchar(max)') lastname, \
+                        c1.data.value('(collaborator/desc)[1]', 'varchar(max)') [desc], \
                         cs1.fullname fullname, \
                         cs1.pict_url avatar, \
                         cs1.sex gender, \
